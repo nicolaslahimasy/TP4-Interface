@@ -4,11 +4,14 @@
     <nav class="navbar">
       <ul class="navbar-left">
         <li>
-          <a href="#" @click.prevent="goHome">Home</a>
+          <router-link to="/">Home</router-link>
+        </li>
+        <li v-if="isAuthenticated">
+          <router-link to="/conversations">Conversations</router-link>
         </li>
       </ul>
       <ul class="navbar-right">
-        <li v-if="!user">
+        <li v-if="!isAuthenticated">
           <SignInButton @update-user="updateUser" />
         </li>
         <li v-else>
@@ -18,14 +21,13 @@
     </nav>
 
     <main class="main-content">
-      <HomePage :user="user" />
+      <slot></slot> <!-- This will display the routed content -->
     </main>
 
     <!-- Footer -->
     <div class="footer-content">
       <p class="footer-text">
-        This work is protected by international laws | C 2021 |
-        thomas-veillard.fr
+        This work is protected by international laws | C 2021 | thomas-veillard.fr
       </p>
     </div>
   </div>
@@ -33,30 +35,26 @@
 
 <script>
 import SignInButton from './SignInButton.vue'; 
-import HomePage from './HomePage.vue'; 
 
 export default {
   components: {
     SignInButton,
-    HomePage, 
   },
-  data() {
-    return {
-      user: null, 
-    };
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.user !== null;
+    },
+    user() {
+      return this.$store.state.user;
+    }
   },
   methods: {
-    goHome() {
-      console.log("Going home...");
-    },
     updateUser(user) {
-      this.user = user;
+      this.$store.commit('setUser', user); // Use Vuex mutation to set the user
     }
   },
 };
 </script>
-
-
 
 <style scoped>
 .navbar {
@@ -80,7 +78,7 @@ ul {
 
 .navbar-right {
   justify-content: flex-end;
-  color:white
+  color: white;
 }
 
 li {
