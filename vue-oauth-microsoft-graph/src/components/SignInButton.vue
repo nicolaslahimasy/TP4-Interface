@@ -1,50 +1,45 @@
 <template>
-    <div>
-      <button v-if="!user" @click="signIn" :disabled="isLoading">
-        <span v-if="isLoading">Connecting...</span>
-        <span v-else>Sign In</span>
-      </button>
-      <div v-else>
-        Logged in as: {{ user.email }}
-      </div>
-    </div>
-  </template>
-  
-  <script>
-  import { signInAndGetUser, getActiveAccount } from '../lib/microsoftGraph.js';
-  
-  export default {
-    props: {
-      user: Object, 
+  <button v-if="!isLoggedIn" @click="signIn" :disabled="isLoading">
+    <span v-if="isLoading">Connecting...</span>
+    <span v-else>Sign In</span>
+  </button>
+</template>
+
+<script>
+import { signInAndGetUser } from '../lib/microsoftGraph.js';
+import { mapMutations } from 'vuex';
+
+export default {
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.user !== null; // Check if user is logged in
     },
-    data() {
-      return {
-        isLoading: false,
-      };
-    },
-    methods: {
-      async signIn() {
-        this.isLoading = true;
-        try {
-          const user = await signInAndGetUser();
-          this.$emit('update-user', user); 
-          console.log('User logged in:', user);
-        } catch (error) {
-          console.error('Login error:', error);
-        } finally {
-          this.isLoading = false;
-        }
-      },
-    },
-    async mounted() {
-      const user = await getActiveAccount();
-      if (user) {
-        this.$emit('update-user', user); 
+  },
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
+  methods: {
+    ...mapMutations(['setUser']),
+    async signIn() {
+      this.isLoading = true;
+      try {
+        const user = await signInAndGetUser();
+        console.log("User logged in:", user);
+        this.setUser(user);
+      } catch (error) {
+        console.error("Login error:", error);
+      } finally {
+        this.isLoading = false;
       }
-    }
-  };
-  </script>
-  
+    },
+  },
+};
+</script>
+
+
+
   <style scoped>
   button {
     background-color: #fff;

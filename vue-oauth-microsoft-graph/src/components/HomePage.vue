@@ -2,9 +2,11 @@
   <div class="homepage-content">
     <h1>Here comes the content of HomePage.</h1>
     
+
     <div v-if="user">
-      <p>Welcome, {{ user.email }}</p>
+      <p>Signed in as {{ user.email }}</p>
     </div>
+    
 
     <BaseButton color="primary" :isDisabled="false">
       BaseButton
@@ -29,22 +31,23 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'; 
 import BaseButton from './BaseButton.vue';
 import AsyncButton from './AsyncBaseButton.vue';
 
 export default {
-  props: {
-    user: Object 
-  },
   components: {
     BaseButton,
     AsyncButton,
   },
+  computed: {
+    ...mapGetters(['user']), 
+  },
   methods: {
     handleAsyncButtonClick() {
       console.log('AsyncButton clicked!');
-    }
-  }
+    },
+  },
 };
 </script>
 

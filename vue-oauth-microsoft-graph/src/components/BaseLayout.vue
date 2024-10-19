@@ -18,7 +18,6 @@
     </nav>
 
     <main class="main-content">
-      <!-- Pass user as a prop to HomePage -->
       <HomePage :user="user" />
     </main>
 
@@ -33,17 +32,17 @@
 </template>
 
 <script>
-import SignInButton from './SignInButton.vue'; // Import SignInButton
-import HomePage from './HomePage.vue'; // Import HomePage
+import SignInButton from './SignInButton.vue'; 
+import HomePage from './HomePage.vue'; 
 
 export default {
   components: {
     SignInButton,
-    HomePage, // Register HomePage
+    HomePage, 
   },
   data() {
     return {
-      user: null, // Store the user state here
+      user: null, 
     };
   },
   methods: {
