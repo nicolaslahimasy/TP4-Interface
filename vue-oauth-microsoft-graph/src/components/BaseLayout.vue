@@ -8,38 +8,56 @@
         </li>
       </ul>
       <ul class="navbar-right">
-        <li>
-          <SignInButton />
+        <li v-if="!user">
+          <SignInButton @update-user="updateUser" />
+        </li>
+        <li v-else>
+          <span>Welcome, {{ user.email }}</span>
         </li>
       </ul>
     </nav>
 
     <main class="main-content">
-      <slot></slot>
+      <!-- Pass user as a prop to HomePage -->
+      <HomePage :user="user" />
     </main>
 
     <!-- Footer -->
     <div class="footer-content">
-      <p class="footer-text">This work is protected by international laws | C 2021 | thomas-veillard.fr</p>
+      <p class="footer-text">
+        This work is protected by international laws | C 2021 |
+        thomas-veillard.fr
+      </p>
     </div>
   </div>
 </template>
 
 <script>
-import SignInButton from './SignInButton.vue';
+import SignInButton from './SignInButton.vue'; // Import SignInButton
+import HomePage from './HomePage.vue'; // Import HomePage
 
 export default {
   components: {
     SignInButton,
+    HomePage, // Register HomePage
+  },
+  data() {
+    return {
+      user: null, // Store the user state here
+    };
   },
   methods: {
     goHome() {
-
       console.log("Going home...");
     },
+    updateUser(user) {
+      this.user = user;
+    }
   },
 };
 </script>
+
+
 
 <style scoped>
 .navbar {
@@ -63,6 +81,7 @@ ul {
 
 .navbar-right {
   justify-content: flex-end;
+  color:white
 }
 
 li {

@@ -1,7 +1,7 @@
 <template>
   
   <BaseLayout >
-  <HomePage />
+    <HomePage />
   </BaseLayout>
 </template>
 

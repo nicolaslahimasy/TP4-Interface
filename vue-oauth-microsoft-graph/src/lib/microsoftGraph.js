@@ -7,11 +7,10 @@ const requestedScopes = {
     scopes: ["User.read"]
 };
 
-
 const msalInstance = new msal.PublicClientApplication({
     auth: {
         clientId: "e8137439-4d1d-462d-a85f-f81cfea8f0d8",
-        authority: `https://login.microsoftonline.com/413600cf-bd4e-4c7c-8a61-69e73cddf731`
+        authority: `https://login.microsoftonline.com/7fc52728-ab93-4bc2-8448-7ebd2295863c`
     },
     cache: {
         cacheLocation: "sessionStorage",
@@ -19,22 +18,32 @@ const msalInstance = new msal.PublicClientApplication({
 });
 
 /**
- * Fonction pour initialiser MSAL avant d'utiliser d'autres méthodes.
+ * Function to initialize MSAL instance.
  */
 export async function initializeMsalInstance() {
-    // Added function
     if (!msalInstance.getActiveAccount()) {
         await msalInstance.initialize();
     }
 }
 
 /**
- * Fonction pour authentifier et obtenir les informations de l'utilisateur
+ * Function to authenticate and obtain user info.
  */
 export async function signInAndGetUser() {
-    await initializeMsalInstance(); // We're adding this line to initialize the msalInstance
+    await initializeMsalInstance();
+    const authResult = await msalInstance.loginPopup(requestedScopes);
+    msalInstance.setActiveAccount(authResult.account);
 
-    const authResult = await msalInstance.loginPopup(requestedScopes)
-    msalInstance.setActiveAccount(authResult.account)
-    return authResult.account
+    // Return the email or preferred username from the account object
+    return {
+        email: authResult.account.username || authResult.account.idTokenClaims.preferred_username,
+        ...authResult.account
+    };
+}
+/**
+ * Function to get the active account (if user is already logged in).
+ */
+export function getActiveAccount() {
+    const account = msalInstance.getActiveAccount();
+    return account ? account : null;
 }
