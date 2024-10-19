@@ -21,7 +21,7 @@
     </nav>
 
     <main class="main-content">
-      <slot></slot> <!-- This will display the routed content -->
+      <slot></slot> 
     </main>
 
     <!-- Footer -->

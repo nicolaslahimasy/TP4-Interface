@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../components/HomePage.vue';
-import ConversationIndexPage from '../components/ConversationIndexPage.vue'; // Make sure this path is correct
+import ConversationIndexPage from '../components/ConversationIndexPage.vue'; 
 
 const routes = [
   {
@@ -11,7 +11,7 @@ const routes = [
   {
     path: '/conversations',
     name: 'Conversations',
-    component: ConversationIndexPage, // This should point to your ConversationIndexPage component
+    component: ConversationIndexPage, 
   },
 ];
 

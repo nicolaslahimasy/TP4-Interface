@@ -2,23 +2,23 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
-    user: null, // Store the user state here
+    user: null, 
   },
   mutations: {
     setUser(state, user) {
-      state.user = user; // Update the user state
+      state.user = user; 
     },
     clearUser(state) {
-      state.user = null; // Clear the user state
+      state.user = null;
     },
   },
   actions: {
     signIn({ commit }, user) {
-      // Commit the mutation to set the user state
+
       commit('setUser', user);
     },
     signOut({ commit }) {
-      // Commit the mutation to clear the user state
+
       commit('clearUser');
     },
   },
